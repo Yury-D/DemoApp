@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="BaseButtonStyle">
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">50dp</item>
+    </style>
+
+    <style name="AddScoreButton" parent="BaseButtonStyle">
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_margin">20dp</item>
+    </style>
+
+</resources>

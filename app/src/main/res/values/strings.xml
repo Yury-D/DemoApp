@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">FoosBall</string>
+
+    <string name="player1_score_hint">Score</string>
+    <string name="player2_score_hint">@string/player1_score_hint</string>
+    <string name="player1_name_hint">Player 1:</string>
+    <string name="player2_name_hint">Player 2:</string>
+    <string name="label_add_score_button">Add</string>
+    <string name="label_save_score_button">Save</string>
+</resources>
