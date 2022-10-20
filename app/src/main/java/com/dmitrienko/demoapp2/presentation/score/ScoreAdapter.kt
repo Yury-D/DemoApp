@@ -5,15 +5,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.dmitrienko.demoapp2.data.ranking.entities.PairGameEntity
 import com.dmitrienko.demoapp2.databinding.LayoutScoreRowBinding
+import com.dmitrienko.demoapp2.domain.score.entities.PairGameEntity
 
-class ScoreAdapter : ListAdapter<PairGameEntity, UserRankViewHolder>(PairGameEntityDiffCallback) {
+class ScoreAdapter(
+    private val onItemClicked: (PairGameEntity) -> Unit
+) : ListAdapter<PairGameEntity, UserRankViewHolder>(PairGameEntityDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserRankViewHolder {
         return UserRankViewHolder(
             LayoutScoreRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        )
+        ) {
+            onItemClicked(getItem(it))
+        }
     }
 
     override fun onBindViewHolder(holder: UserRankViewHolder, position: Int) {
@@ -39,8 +43,15 @@ object PairGameEntityDiffCallback : DiffUtil.ItemCallback<PairGameEntity>() {
 }
 
 
-class UserRankViewHolder(private val bindings: LayoutScoreRowBinding) :
+class UserRankViewHolder(
+    private val bindings: LayoutScoreRowBinding,
+    onItemClicked: (Int) -> Unit
+) :
     RecyclerView.ViewHolder(bindings.root) {
+
+    init {
+        itemView.setOnClickListener { onItemClicked(adapterPosition) }
+    }
 
     fun bind(item: PairGameEntity) {
         bindings.apply {

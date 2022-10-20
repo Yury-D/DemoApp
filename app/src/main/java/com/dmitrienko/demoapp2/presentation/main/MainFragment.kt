@@ -3,14 +3,13 @@ package com.dmitrienko.demoapp2.presentation.main
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.dmitrienko.demoapp2.R
-import com.dmitrienko.demoapp2.data.ranking.entities.PairGameEntity
-import com.dmitrienko.demoapp2.data.ranking.entities.PlayerDataEntity
-import com.dmitrienko.demoapp2.data.ranking.entities.UserRankEntity
+import com.dmitrienko.demoapp2.domain.score.entities.PairGameEntity
+import com.dmitrienko.demoapp2.domain.score.entities.PlayerDataEntity
+import com.dmitrienko.demoapp2.domain.score.entities.UserRankEntity
 import com.dmitrienko.demoapp2.databinding.FragmentMainBinding
 import com.dmitrienko.demoapp2.databinding.LayoutEditScoreBinding
 import com.dmitrienko.demoapp2.presentation.score.ScoreViewModel
@@ -35,7 +34,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
             binding.fab.setOnClickListener { view ->
                 showAddScoreDialog(layoutInflater, onAddedAction = {
-                    scoreViewModel.addUsedScore(it)
+                    scoreViewModel.addGame(it)
                 })
             }
         }

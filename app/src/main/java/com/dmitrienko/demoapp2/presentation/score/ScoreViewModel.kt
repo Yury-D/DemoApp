@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.dmitrienko.demoapp2.data.ranking.entities.PairGameEntity
-import com.dmitrienko.demoapp2.domain.score.repos.UserScoreRepository
+import com.dmitrienko.demoapp2.domain.score.entities.PairGameEntity
+import com.dmitrienko.demoapp2.domain.score.repos.GamesRepository
 import com.dmitrienko.demoapp2.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ScoreViewModel @Inject constructor(
-    private val userScoreRepository: UserScoreRepository
+    private val userScoreRepository: GamesRepository
 ) : BaseViewModel() {
 
     companion object {
@@ -29,21 +29,21 @@ class ScoreViewModel @Inject constructor(
         it //map if needed
     }
 
-    fun addUsedScore(scoreData: PairGameEntity) {
-        disposable.add(userScoreRepository.addUserScore(scoreData)
+    fun addGame(gameEntity: PairGameEntity) {
+        disposable.add(userScoreRepository.addGame(gameEntity)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    Log.e(TAG, "addUsedScore succeed")//TODO
+                    Log.e(TAG, "addGame succeed")//TODO
                 }, {
-                    Log.e(TAG, "error in addUsedScore", it)
+                    Log.e(TAG, "error in addGame", it)
                 }
             ))
     }
 
-    fun fetchUserScores() {
-        disposable.add(userScoreRepository.getUserScoreList()
+    fun fetchGames() {
+        disposable.add(userScoreRepository.getGamesList()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { swipeRefreshIsRefreshing.value = true }
@@ -51,8 +51,21 @@ class ScoreViewModel @Inject constructor(
             .subscribe({
                 _resultsList.value = it
             }, {
-                Log.e(TAG, "error in fetchUserScores", it)
+                Log.e(TAG, "error in fetchGames", it)
             })
         )
+    }
+
+    fun updateGame(game: PairGameEntity) {
+        disposable.add(userScoreRepository.updateGame(game)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    Log.e(TAG, "updateGame succeed")//TODO
+                }, {
+                    Log.e(TAG, "error in addGame", it)
+                }
+            ))
     }
 }

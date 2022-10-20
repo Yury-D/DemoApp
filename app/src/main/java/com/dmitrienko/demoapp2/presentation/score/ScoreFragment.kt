@@ -15,11 +15,13 @@ class ScoreFragment : Fragment(R.layout.fragment_score) {
 
     private val scoreViewModel by viewModels<ScoreViewModel>()
     private val binding by viewBinding(FragmentScoreBinding::bind)
-    private val scoreAdapter by lazy { ScoreAdapter() }
+    private val scoreAdapter by lazy {
+        ScoreAdapter { scoreViewModel.updateGame(it) }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        scoreViewModel.fetchUserScores()
+        scoreViewModel.fetchGames()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -30,6 +32,7 @@ class ScoreFragment : Fragment(R.layout.fragment_score) {
         scoreViewModel.swipeRefreshIsRefreshing.observe(viewLifecycleOwner) {
             binding.swipeRefresh.isRefreshing = it
         }
+        binding.swipeRefresh.setOnRefreshListener { scoreViewModel.fetchGames() }
 
         scoreViewModel.scoreList.observe(viewLifecycleOwner) {
             scoreAdapter.submitList(it)

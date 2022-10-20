@@ -1,7 +1,7 @@
 package com.dmitrienko.demoapp2.di
 
-import com.dmitrienko.demoapp2.data.ranking.UserScoreRepositoryImpl
-import com.dmitrienko.demoapp2.domain.score.repos.UserScoreRepository
+import com.dmitrienko.demoapp2.data.ranking.GamesRepositoryImpl
+import com.dmitrienko.demoapp2.domain.score.repos.GamesRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -13,7 +13,6 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindRepository(
-        repo: UserScoreRepositoryImpl
-    ): UserScoreRepository
-
+        repo: GamesRepositoryImpl
+    ): GamesRepository
 }
