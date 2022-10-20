@@ -10,17 +10,17 @@ import com.dmitrienko.demoapp2.domain.score.entities.PairGameEntity
 
 class ScoreAdapter(
     private val onItemClicked: (PairGameEntity) -> Unit
-) : ListAdapter<PairGameEntity, UserRankViewHolder>(PairGameEntityDiffCallback) {
+) : ListAdapter<PairGameEntity, GameViewHolder>(PairGameEntityDiffCallback) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserRankViewHolder {
-        return UserRankViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
+        return GameViewHolder(
             LayoutScoreRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         ) {
             onItemClicked(getItem(it))
         }
     }
 
-    override fun onBindViewHolder(holder: UserRankViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
@@ -43,7 +43,7 @@ object PairGameEntityDiffCallback : DiffUtil.ItemCallback<PairGameEntity>() {
 }
 
 
-class UserRankViewHolder(
+class GameViewHolder(
     private val bindings: LayoutScoreRowBinding,
     onItemClicked: (Int) -> Unit
 ) :

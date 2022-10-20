@@ -7,4 +7,6 @@
     <string name="player2_name_hint">Player 2:</string>
     <string name="label_add_score_button">Add</string>
     <string name="label_save_score_button">Save</string>
+    <string name="label_tab_time_table">Time Table</string>
+    <string name="label_tab_rankings">Rankings</string>
 </resources>

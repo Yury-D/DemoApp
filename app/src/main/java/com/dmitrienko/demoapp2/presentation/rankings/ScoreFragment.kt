@@ -1,4 +1,4 @@
-package com.dmitrienko.demoapp2.presentation.score
+package com.dmitrienko.demoapp2.presentation.rankings
 
 import android.os.Bundle
 import android.view.View
@@ -11,21 +11,15 @@ import com.dmitrienko.demoapp2.utils.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ScoreFragment : Fragment(R.layout.fragment_score) {
+class RankingFragment : Fragment(R.layout.fragment_score) {
 
-    private val scoreViewModel by viewModels<ScoreViewModel>()
+    private val rankingViewModel by viewModels<RankingViewModel>()
     private val binding by viewBinding(FragmentScoreBinding::bind)
-    private val scoreAdapter by lazy {
-        ScoreAdapter {
-            showAddScoreDialog(requireContext(), layoutInflater, it, onAddedAction = { newGame ->
-                scoreViewModel.updateGame(newGame)
-            })
-        }
-    }
+    private val rankingAdapter by lazy { RankingAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        scoreViewModel.fetchGames()
+        rankingViewModel.fetchRankings()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,26 +27,26 @@ class ScoreFragment : Fragment(R.layout.fragment_score) {
 
         initRecycler()
 
-        scoreViewModel.swipeRefreshIsRefreshing.observe(viewLifecycleOwner) {
+        rankingViewModel.swipeRefreshIsRefreshing.observe(viewLifecycleOwner) {
             binding.swipeRefresh.isRefreshing = it
         }
-        binding.swipeRefresh.setOnRefreshListener { scoreViewModel.fetchGames() }
+        binding.swipeRefresh.setOnRefreshListener { rankingViewModel.fetchRankings() }
 
-        scoreViewModel.gamesList.observe(viewLifecycleOwner) {
-            scoreAdapter.submitList(it)
+        rankingViewModel.rankingsList.observe(viewLifecycleOwner) {
+            rankingAdapter.submitList(it)
         }
     }
 
     private fun initRecycler() {
         binding.scoreTableRV.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = scoreAdapter
+            adapter = rankingAdapter
         }
     }
 
     companion object {
         @JvmStatic
-        fun newInstance() = ScoreFragment()
+        fun newInstance() = RankingFragment()
     }
 
 }

@@ -10,8 +10,8 @@ fun PairGameDbEntity.mapToDomain() = PairGameEntity(
         playerScore = player1.playerScore
     ),
     UserRankEntity(
-        id = player1.id,
+        id = player2.id,
         playerName = player2.playerName,
-        playerScore = player1.playerScore
+        playerScore = player2.playerScore
     )
 )

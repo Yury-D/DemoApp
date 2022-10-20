@@ -1,4 +1,4 @@
-package com.dmitrienko.demoapp2.presentation.main
+package com.dmitrienko.demoapp2.presentation.score
 
 import android.content.Context
 import android.view.LayoutInflater

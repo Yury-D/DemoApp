@@ -3,7 +3,6 @@ package com.dmitrienko.demoapp2.presentation.score
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.dmitrienko.demoapp2.domain.score.entities.PairGameEntity
 import com.dmitrienko.demoapp2.domain.score.repos.GamesRepository
 import com.dmitrienko.demoapp2.presentation.base.BaseViewModel
@@ -23,11 +22,8 @@ class ScoreViewModel @Inject constructor(
 
     val swipeRefreshIsRefreshing: MutableLiveData<Boolean> = MutableLiveData()
 
-    private val _resultsList = MutableLiveData<List<PairGameEntity>>()
-
-    val gamesList: LiveData<List<PairGameEntity>> = Transformations.map(_resultsList) {
-        it //map if needed
-    }
+    private val _gamesList = MutableLiveData<List<PairGameEntity>>()
+    val gamesList: LiveData<List<PairGameEntity>> = _gamesList
 
     fun addGame(gameEntity: PairGameEntity) {
         disposable.add(gamesRepository.addGame(gameEntity)
@@ -47,7 +43,7 @@ class ScoreViewModel @Inject constructor(
             .doOnSubscribe { swipeRefreshIsRefreshing.value = true }
             .subscribe({
                 swipeRefreshIsRefreshing.value = false
-                _resultsList.value = it
+                _gamesList.value = it
             }, {
                 Log.e(TAG, "error in fetchGames", it)
             })
