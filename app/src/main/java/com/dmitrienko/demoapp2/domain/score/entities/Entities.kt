@@ -19,12 +19,12 @@ data class PairGameEntity(
 
 data class UserRankEntity(
     val id: String,
-    val playerData: String,
+    val playerName: String,
     val playerScore: PlayerScore
 ) {
     fun toUserRankDbEntity() = UserRankDbEntity(
         id = id,
-        playerName = playerData,
+        playerName = playerName,
         playerScore = playerScore
     )
 }

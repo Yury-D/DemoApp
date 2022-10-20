@@ -8,9 +8,8 @@ import com.dmitrienko.demoapp2.domain.score.entities.PairGameEntity
 import com.dmitrienko.demoapp2.domain.score.repos.GamesRepository
 import com.dmitrienko.demoapp2.presentation.base.BaseViewModel
 import com.dmitrienko.demoapp2.utils.Completables
+import com.dmitrienko.demoapp2.utils.Observables
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,8 +43,7 @@ class ScoreViewModel @Inject constructor(
 
     fun fetchGames() {
         disposable.add(gamesRepository.getGamesList()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .compose(Observables.setSchedulers())
             .doOnSubscribe { swipeRefreshIsRefreshing.value = true }
             .subscribe({
                 swipeRefreshIsRefreshing.value = false

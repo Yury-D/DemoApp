@@ -32,38 +32,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             }.attach()
 
             binding.fab.setOnClickListener { view ->
-                showAddScoreDialog(layoutInflater, onAddedAction = {
+                showAddScoreDialog(requireContext(), layoutInflater, onAddedAction = {
                     scoreViewModel.addGame(it)
                 })
             }
-        }
-    }
-
-    private fun showAddScoreDialog(layoutInflater: LayoutInflater, onAddedAction: (PairGameEntity) -> Unit) {
-        AlertDialog.Builder(requireContext()).apply {
-            var alertDialog: AlertDialog? = null
-            val bindings = LayoutEditScoreBinding.inflate(layoutInflater)
-            bindings.saveButton.setOnClickListener {
-                alertDialog?.dismiss()
-                onAddedAction(collectScoresAndNames(bindings))
-            }
-            setView(bindings.root)
-            alertDialog = create()
-            alertDialog.show()
-        }
-    }
-
-    private fun collectScoresAndNames(bindings: LayoutEditScoreBinding): PairGameEntity {
-        bindings.apply {
-            val player1name = player1name.text.toString()
-            val player1score = player1Score.text.toString().toInt()
-            val player2name = player2name.text.toString()
-            val player2score = player2Score.text.toString().toInt()
-            return PairGameEntity(
-                UUID.randomUUID().toString(),
-                UserRankEntity(UUID.randomUUID().toString(), player1name, player1score),
-                UserRankEntity(UUID.randomUUID().toString(), player2name, player2score)
-            )
         }
     }
 

@@ -2,16 +2,16 @@ package com.dmitrienko.demoapp2.utils
 
 import io.reactivex.Completable
 import io.reactivex.CompletableTransformer
-import io.reactivex.Single
-import io.reactivex.SingleTransformer
+import io.reactivex.Observable
+import io.reactivex.ObservableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class Singles {
+class Observables {
     companion object {
-        fun <T> setSchedulers(): SingleTransformer<T, T> {
-            return SingleTransformer { upstream: Single<T> ->
-                upstream
+        fun <T> setSchedulers(): ObservableTransformer<T, T> {
+            return ObservableTransformer { observable: Observable<T> ->
+                observable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
             }

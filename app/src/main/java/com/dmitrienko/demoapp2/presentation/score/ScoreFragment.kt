@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dmitrienko.demoapp2.R
 import com.dmitrienko.demoapp2.databinding.FragmentScoreBinding
+import com.dmitrienko.demoapp2.presentation.main.showAddScoreDialog
 import com.dmitrienko.demoapp2.utils.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -16,7 +17,11 @@ class ScoreFragment : Fragment(R.layout.fragment_score) {
     private val scoreViewModel by viewModels<ScoreViewModel>()
     private val binding by viewBinding(FragmentScoreBinding::bind)
     private val scoreAdapter by lazy {
-        ScoreAdapter { scoreViewModel.updateGame(it) }
+        ScoreAdapter {
+            showAddScoreDialog(requireContext(), layoutInflater, it, onAddedAction = { newGame ->
+                scoreViewModel.updateGame(newGame)
+            })
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
