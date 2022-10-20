@@ -8,7 +8,7 @@ import io.reactivex.Observable
 @Dao
 interface GamesDao {
     @Query("SELECT * FROM games")
-    fun getAll(): Observable<List<PairGameDbEntity?>>
+    fun getAll(): Observable<List<PairGameDbEntity>>
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun updateGame(game: PairGameDbEntity): Completable

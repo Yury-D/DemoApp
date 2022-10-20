@@ -7,6 +7,7 @@ import androidx.lifecycle.Transformations
 import com.dmitrienko.demoapp2.domain.score.entities.PairGameEntity
 import com.dmitrienko.demoapp2.domain.score.repos.GamesRepository
 import com.dmitrienko.demoapp2.presentation.base.BaseViewModel
+import com.dmitrienko.demoapp2.utils.Completables
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -14,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ScoreViewModel @Inject constructor(
-    private val userScoreRepository: GamesRepository
+    private val gamesRepository: GamesRepository
 ) : BaseViewModel() {
 
     companion object {
@@ -25,14 +26,13 @@ class ScoreViewModel @Inject constructor(
 
     private val _resultsList = MutableLiveData<List<PairGameEntity>>()
 
-    val scoreList: LiveData<List<PairGameEntity>> = Transformations.map(_resultsList) {
+    val gamesList: LiveData<List<PairGameEntity>> = Transformations.map(_resultsList) {
         it //map if needed
     }
 
     fun addGame(gameEntity: PairGameEntity) {
-        disposable.add(userScoreRepository.addGame(gameEntity)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        disposable.add(gamesRepository.addGame(gameEntity)
+            .compose(Completables.setSchedulers())
             .subscribe(
                 {
                     Log.e(TAG, "addGame succeed")//TODO
@@ -43,12 +43,12 @@ class ScoreViewModel @Inject constructor(
     }
 
     fun fetchGames() {
-        disposable.add(userScoreRepository.getGamesList()
+        disposable.add(gamesRepository.getGamesList()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { swipeRefreshIsRefreshing.value = true }
-            .doFinally { swipeRefreshIsRefreshing.value = false }
             .subscribe({
+                swipeRefreshIsRefreshing.value = false
                 _resultsList.value = it
             }, {
                 Log.e(TAG, "error in fetchGames", it)
@@ -57,9 +57,8 @@ class ScoreViewModel @Inject constructor(
     }
 
     fun updateGame(game: PairGameEntity) {
-        disposable.add(userScoreRepository.updateGame(game)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        disposable.add(gamesRepository.updateGame(game)
+            .compose(Completables.setSchedulers())
             .subscribe(
                 {
                     Log.e(TAG, "updateGame succeed")//TODO

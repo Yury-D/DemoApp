@@ -7,7 +7,8 @@ import com.dmitrienko.demoapp2.domain.score.entities.UserRankEntity
 import com.dmitrienko.demoapp2.domain.score.entities.mapToDomain
 import com.dmitrienko.demoapp2.domain.score.repos.GamesRepository
 import io.reactivex.Completable
-import io.reactivex.Single
+import io.reactivex.Observable
+import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -18,16 +19,18 @@ class GamesRepositoryImpl @Inject constructor(
 ) : GamesRepository {
 
     init {
-        getMockGames().forEach {
-            addGame(it).subscribe()
-        }
+        Observable.fromCallable { getMockGames() }
+            .observeOn(Schedulers.io())
+            .flatMapIterable { it }
+            .map(::addGame)
+            .subscribe()
     }
 
-    override fun getGamesList(): Single<List<PairGameEntity>> {
+    override fun getGamesList(): Observable<List<PairGameEntity>> {
         return gamesDao.getAll()
-            .flatMapIterable { it }
-            .map(PairGameDbEntity::mapToDomain)
-            .toList()
+            .map {
+                it.map(PairGameDbEntity::mapToDomain)
+            }
     }
 
     override fun addGame(game: PairGameEntity): Completable {

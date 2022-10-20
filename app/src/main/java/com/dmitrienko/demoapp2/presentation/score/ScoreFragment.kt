@@ -34,7 +34,7 @@ class ScoreFragment : Fragment(R.layout.fragment_score) {
         }
         binding.swipeRefresh.setOnRefreshListener { scoreViewModel.fetchGames() }
 
-        scoreViewModel.scoreList.observe(viewLifecycleOwner) {
+        scoreViewModel.gamesList.observe(viewLifecycleOwner) {
             scoreAdapter.submitList(it)
         }
     }

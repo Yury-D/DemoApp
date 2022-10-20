@@ -55,8 +55,8 @@ class UserRankViewHolder(
 
     fun bind(item: PairGameEntity) {
         bindings.apply {
-            player1Name.text = item.player1.playerData.name
-            player2Name.text = item.player2.playerData.name
+            player1Name.text = item.player1.playerData
+            player2Name.text = item.player2.playerData
             player1Score.text = item.player1.playerScore.toString()
             player2Score.text = item.player2.playerScore.toString()
         }

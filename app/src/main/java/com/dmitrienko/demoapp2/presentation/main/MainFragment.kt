@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.dmitrienko.demoapp2.R
 import com.dmitrienko.demoapp2.domain.score.entities.PairGameEntity
-import com.dmitrienko.demoapp2.domain.score.entities.PlayerDataEntity
 import com.dmitrienko.demoapp2.domain.score.entities.UserRankEntity
 import com.dmitrienko.demoapp2.databinding.FragmentMainBinding
 import com.dmitrienko.demoapp2.databinding.LayoutEditScoreBinding
@@ -42,12 +41,15 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private fun showAddScoreDialog(layoutInflater: LayoutInflater, onAddedAction: (PairGameEntity) -> Unit) {
         AlertDialog.Builder(requireContext()).apply {
+            var alertDialog: AlertDialog? = null
             val bindings = LayoutEditScoreBinding.inflate(layoutInflater)
             bindings.saveButton.setOnClickListener {
+                alertDialog?.dismiss()
                 onAddedAction(collectScoresAndNames(bindings))
             }
             setView(bindings.root)
-            create().show()
+            alertDialog = create()
+            alertDialog.show()
         }
     }
 
@@ -59,8 +61,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             val player2score = player2Score.text.toString().toInt()
             return PairGameEntity(
                 UUID.randomUUID().toString(),
-                UserRankEntity(UUID.randomUUID().toString(), PlayerDataEntity(player1name), player1score),
-                UserRankEntity(UUID.randomUUID().toString(), PlayerDataEntity(player2name), player2score)
+                UserRankEntity(UUID.randomUUID().toString(), player1name, player1score),
+                UserRankEntity(UUID.randomUUID().toString(), player2name, player2score)
             )
         }
     }

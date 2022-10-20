@@ -1,9 +1,6 @@
 package com.dmitrienko.demoapp2.data.ranking.room.entities
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 @Entity(
     tableName = "games",
@@ -13,6 +10,6 @@ import androidx.room.PrimaryKey
 )
 data class PairGameDbEntity(
     @ColumnInfo(name = "id") @PrimaryKey val id: String,
-    @ColumnInfo(name = "player1") val player1: UserRankDbEntity,
-    @ColumnInfo(name = "player2") val player2: UserRankDbEntity,
+    @Embedded(prefix = "player1_") val player1: UserRankDbEntity,
+    @Embedded(prefix = "player2_") val player2: UserRankDbEntity,
 )

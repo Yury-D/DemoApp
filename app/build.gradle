@@ -50,6 +50,7 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:1.5.3"
 
     implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-rxjava2:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
     // RxJava2 Dependencies
