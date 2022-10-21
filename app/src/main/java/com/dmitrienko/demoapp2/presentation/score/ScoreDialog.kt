@@ -3,9 +3,11 @@ package com.dmitrienko.demoapp2.presentation.score
 import android.content.Context
 import android.view.LayoutInflater
 import androidx.appcompat.app.AlertDialog
+import com.dmitrienko.demoapp2.R
 import com.dmitrienko.demoapp2.databinding.LayoutEditScoreBinding
 import com.dmitrienko.demoapp2.domain.score.entities.PairGameEntity
 import com.dmitrienko.demoapp2.domain.score.entities.UserRankEntity
+import com.google.android.material.textfield.TextInputEditText
 import java.util.*
 
 
@@ -20,8 +22,11 @@ fun showAddScoreDialog(
         val bindings = LayoutEditScoreBinding.inflate(layoutInflater)
         gameEntity?.let { prefill(it, bindings) }
         bindings.saveButton.setOnClickListener {
-            alertDialog?.dismiss()
-            onAddedAction(collectScoresAndNames(bindings, gameEntity))
+            val enteredEntity = collectScoresAndNames(bindings, gameEntity)
+            enteredEntity?.apply {
+                alertDialog?.dismiss()
+                onAddedAction(enteredEntity)
+            }
         }
         setView(bindings.root)
         alertDialog = create()
@@ -41,24 +46,33 @@ fun prefill(gameEntity: PairGameEntity, bindings: LayoutEditScoreBinding) {
 private fun collectScoresAndNames(
     bindings: LayoutEditScoreBinding,
     gameEntity: PairGameEntity?
-): PairGameEntity {
+): PairGameEntity? {
     bindings.apply {
-        val player1name = player1name.text.toString()
-        val player1score = player1Score.text.toString().toInt()
-        val player2name = player2name.text.toString()
-        val player2score = player2Score.text.toString().toInt()
+        val p1name = player1name.text.toString()
+        val p1score = player1Score.text.toString()
+        val p2name = player2name.text.toString()
+        val p2score = player2Score.text.toString()
+        if (validate(player1name, player2name, player1Score, player2Score).not()) return null
         return PairGameEntity(
             gameEntity?.id ?: UUID.randomUUID().toString(),
             UserRankEntity(
                 gameEntity?.player1?.id ?: UUID.randomUUID().toString(),
-                player1name,
-                player1score
+                p1name,
+                p1score.toInt()
             ),
             UserRankEntity(
                 gameEntity?.player2?.id ?: UUID.randomUUID().toString(),
-                player2name,
-                player2score
+                p2name,
+                p2score.toInt()
             )
         )
+    }
+}
+
+fun validate(vararg view: TextInputEditText): Boolean {
+    return view.none {
+        val notValid = it.text.isNullOrEmpty()
+        if (notValid) it.error = it.resources?.getString(R.string.text_input_error)
+        notValid
     }
 }
