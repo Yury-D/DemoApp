@@ -8,6 +8,7 @@ import com.dmitrienko.demoapp2.domain.score.entities.mapToDomain
 import com.dmitrienko.demoapp2.domain.score.repos.GamesRepository
 import io.reactivex.Completable
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
@@ -18,12 +19,12 @@ class GamesRepositoryImpl @Inject constructor(
     private val gamesDao: GamesDao
 ) : GamesRepository {
 
-    init {
-        Observable.fromCallable { getMockGames() }
+    override fun initMockData(): Completable {
+        return Observable.fromCallable { getMockGames() }
             .observeOn(Schedulers.io())
             .flatMapIterable { it }
-            .map(::addGame)
-            .subscribe()
+            .flatMapCompletable { addGame(it) }
+
     }
 
     override fun getGamesList(): Observable<List<PairGameEntity>> {

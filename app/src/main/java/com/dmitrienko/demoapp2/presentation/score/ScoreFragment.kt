@@ -25,6 +25,7 @@ class ScoreFragment : Fragment(R.layout.fragment_score) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        scoreViewModel.initMockData()
         scoreViewModel.fetchGames()
     }
 
@@ -54,5 +55,4 @@ class ScoreFragment : Fragment(R.layout.fragment_score) {
         @JvmStatic
         fun newInstance() = ScoreFragment()
     }
-
 }

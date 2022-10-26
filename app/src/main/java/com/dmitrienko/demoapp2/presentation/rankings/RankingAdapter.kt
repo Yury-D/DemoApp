@@ -44,5 +44,5 @@ class UserRankViewHolder(
             player1Score.text = item.playerScore.toString()
         }
     }
-
 }
+

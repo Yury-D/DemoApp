@@ -16,3 +16,4 @@ abstract class RepositoryModule {
         repo: GamesRepositoryImpl
     ): GamesRepository
 }
+

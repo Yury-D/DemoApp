@@ -8,4 +8,5 @@ interface GamesRepository {
     fun getGamesList(): Observable<List<PairGameEntity>>
     fun addGame(game: PairGameEntity): Completable
     fun updateGame(game: PairGameEntity): Completable
+    fun initMockData(): Completable
 }

@@ -61,5 +61,5 @@ class GameViewHolder(
             player2Score.text = item.player2.playerScore.toString()
         }
     }
-
 }
+

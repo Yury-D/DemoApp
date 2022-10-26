@@ -26,7 +26,7 @@ class RankingViewModel @Inject constructor(
 
     fun fetchRankings() {
         disposable.add(rankingsInteractor.getRankings()
-            .compose(Observables.setSchedulers())
+            .compose(Observables.setIoAndMainSchedulers())
             .doOnSubscribe { swipeRefreshIsRefreshing.value = true }
             .subscribe({
                 swipeRefreshIsRefreshing.value = false
@@ -36,5 +36,4 @@ class RankingViewModel @Inject constructor(
             })
         )
     }
-
 }

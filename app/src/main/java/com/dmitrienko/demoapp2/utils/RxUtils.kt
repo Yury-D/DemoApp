@@ -9,7 +9,7 @@ import io.reactivex.schedulers.Schedulers
 
 class Observables {
     companion object {
-        fun <T> setSchedulers(): ObservableTransformer<T, T> {
+        fun <T> setIoAndMainSchedulers(): ObservableTransformer<T, T> {
             return ObservableTransformer { observable: Observable<T> ->
                 observable
                     .subscribeOn(Schedulers.io())
@@ -21,7 +21,7 @@ class Observables {
 
 class Completables {
     companion object {
-        fun setSchedulers(): CompletableTransformer {
+        fun setIoAndMainSchedulers(): CompletableTransformer {
             return CompletableTransformer { upstream: Completable ->
                 upstream
                     .subscribeOn(Schedulers.io())

@@ -27,7 +27,7 @@ class ScoreViewModel @Inject constructor(
 
     fun addGame(gameEntity: PairGameEntity) {
         disposable.add(gamesRepository.addGame(gameEntity)
-            .compose(Completables.setSchedulers())
+            .compose(Completables.setIoAndMainSchedulers())
             .subscribe(
                 {
                     Log.e(TAG, "addGame succeed")//TODO
@@ -37,9 +37,13 @@ class ScoreViewModel @Inject constructor(
             ))
     }
 
+    fun initMockData() {
+        disposable.add(gamesRepository.initMockData().subscribe())
+    }
+
     fun fetchGames() {
         disposable.add(gamesRepository.getGamesList()
-            .compose(Observables.setSchedulers())
+            .compose(Observables.setIoAndMainSchedulers())
             .doOnSubscribe { swipeRefreshIsRefreshing.value = true }
             .subscribe({
                 swipeRefreshIsRefreshing.value = false
@@ -52,7 +56,7 @@ class ScoreViewModel @Inject constructor(
 
     fun updateGame(game: PairGameEntity) {
         disposable.add(gamesRepository.updateGame(game)
-            .compose(Completables.setSchedulers())
+            .compose(Completables.setIoAndMainSchedulers())
             .subscribe(
                 {
                     Log.e(TAG, "updateGame succeed")//TODO

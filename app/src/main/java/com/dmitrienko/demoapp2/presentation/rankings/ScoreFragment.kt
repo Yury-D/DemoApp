@@ -48,5 +48,4 @@ class RankingFragment : Fragment(R.layout.fragment_score) {
         @JvmStatic
         fun newInstance() = RankingFragment()
     }
-
 }
